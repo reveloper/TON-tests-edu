@@ -1,0 +1,93 @@
+"Asm.fif" include
+// automatically generated from `C:\Users\AlexG\AppData\Local\toncli\toncli\func-libs\stdlib-tests.func` `C:\tondev\testplaygr\func\code.func` 
+PROGRAM{
+  DECLPROC recv_internal
+  DECLPROC recv_external
+  85143 DECLMETHOD seqno
+  78748 DECLMETHOD get_public_key
+  113531 DECLMETHOD hello_world
+  79973 DECLMETHOD get_hi_from_cell
+  recv_internal PROC:<{
+    //  in_msg
+    DROP	// 
+  }>
+  recv_external PROC:<{
+    //  in_msg
+    //  cs
+    32 LDU	//  _5 cs
+    32 LDU	//  _5 _8 cs
+    32 LDU	//  subwallet_id valid_until msg_seqno cs
+    s0 s2 XCHG
+    NOW	//  subwallet_id cs msg_seqno valid_until _15
+    LEQ	//  subwallet_id cs msg_seqno _16
+    35 THROWIF
+    c4 PUSH	//  subwallet_id cs msg_seqno _19
+    CTOS	//  subwallet_id cs msg_seqno ds
+    32 LDU	//  subwallet_id cs msg_seqno _24 ds
+    32 LDU	//  subwallet_id cs msg_seqno _24 _27 ds
+    256 LDU	//  subwallet_id cs msg_seqno stored_seqno stored_subwallet public_key ds
+    ENDS
+    s3 s2 XCPU	//  subwallet_id cs public_key stored_seqno stored_subwallet msg_seqno stored_seqno
+    EQUAL	//  subwallet_id cs public_key stored_seqno stored_subwallet _35
+    33 THROWIFNOT
+    s4 s4 XCPU	//  stored_subwallet cs public_key stored_seqno subwallet_id stored_subwallet
+    EQUAL	//  stored_subwallet cs public_key stored_seqno _38
+    34 THROWIFNOT
+    ACCEPT
+    s0 s2 XCHG	//  stored_subwallet stored_seqno public_key cs
+    WHILE:<{
+      DUP	//  stored_subwallet stored_seqno public_key cs cs
+      SREFS	//  stored_subwallet stored_seqno public_key cs _43
+    }>DO<{	//  stored_subwallet stored_seqno public_key cs
+      8 LDU	//  stored_subwallet stored_seqno public_key _76 _75
+      NIP	//  stored_subwallet stored_seqno public_key cs
+      LDREF	//  stored_subwallet stored_seqno public_key _78 _77
+      NIP	//  stored_subwallet stored_seqno public_key cs
+    }>	//  stored_subwallet stored_seqno public_key cs
+    DROP	//  stored_subwallet stored_seqno public_key
+    SWAP	//  stored_subwallet public_key stored_seqno
+    INC	//  stored_subwallet public_key _51
+    NEWC	//  stored_subwallet public_key _51 _52
+    32 STU	//  stored_subwallet public_key _54
+    s1 s2 XCHG	//  public_key stored_subwallet _54
+    32 STU	//  public_key _56
+    256 STU	//  _58
+    ENDC	//  _59
+    c4 POP
+    1 PUSHINT	//  _61=1
+    2 PUSHINT	//  _61=1 _62=2
+  }>
+  seqno PROC:<{
+    // 
+    c4 PUSH	//  _0
+    CTOS	//  _1
+    32 PLDU	//  _3
+  }>
+  get_public_key PROC:<{
+    // 
+    c4 PUSH	//  _1
+    CTOS	//  cs
+    64 LDU	//  _9 _8
+    NIP	//  cs
+    256 PLDU	//  _7
+  }>
+  hello_world PROC:<{
+    // 
+    26729 PUSHINT	//  _0=26729
+  }>
+  get_hi_from_cell PROC:<{
+    // 
+    c4 PUSH	//  _1
+    CTOS	//  _2
+    32 PLDU	//  seqno
+    26729 PUSHINT	//  seqno _6=26729
+    NEWC	//  seqno _6=26729 _7
+    64 STU	//  seqno _9
+    ENDC	//  seqno test_inside
+    OVER
+    NEWC	//  seqno test_inside seqno _11
+    32 STU	//  seqno test_inside _13
+    STREF	//  seqno _14
+    ENDC	//  seqno _15
+  }>
+}END>c
